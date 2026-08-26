@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TWINZ - SPACE BETWEEN LINE AND DETAILS</title>
+<title>TWINZ - WITNESS SPACE LINE FIX</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -24,7 +24,7 @@ label{font-weight:600;font-size:13px}
 <div class="container">
 <img src="https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png" class="logo">
 <h1 style="text-align:center;color:#0A1931;font-size:20px;margin:5px 0">TWINZ CORPORATE SERVICES</h1>
-<p style="text-align:center;color:#0A1931;font-weight:700;font-size:11px;margin:0 0 8px 0">SPACE FIX - Thabo & Thabang - FULL A4 FIT</p>
+<p style="text-align:center;color:#0A1931;font-weight:700;font-size:11px;margin:0 0 8px 0">WITNESS SPACE FIX - Thabo & Thabang</p>
 <div class="grid"><div><label>Saved</label><select id="savedClients" onchange="loadClient()"><option value="">-- Select --</option></select></div><div><label>&nbsp;</label><button class="btn btn-blue" type="button" onclick="saveClient()">💾 Save</button></div></div>
 <div class="grid"><div><label>Business Name *</label><input id="bizName" value="Twinz Corporate Services Pty Ltd"></div><div><label>Owner Name</label><input id="ownerName" value="Thabo & Thabang Nkuna"></div></div>
 <div class="grid"><div><label>ID Number</label><input id="idNumber" value="9603185760088"></div><div><label>Business Type</label><input id="bizType" value="Multiple Businesses"></div></div>
@@ -36,7 +36,7 @@ label{font-weight:600;font-size:13px}
 <div class="sig-box"><label><b>Client Signature</b></label><input id="clientSign" value="Thatang Nkuna"><canvas id="sigClient" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigClient')">Clear</button></div>
 <div class="sig-box"><label><b>Witness Signature</b></label><input id="witnessName" value="Thapelo Nkuna"><canvas id="sigWitness" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigWitness')">Clear</button></div>
 <div class="grid"><div><label>Date</label><input type="date" id="signDate"></div><div><label>Start Date</label><input type="date" id="startDate"></div></div>
-<button class="btn" type="button" onclick="generateContractPDF()">📄 GENERATE - WITH SPACE</button>
+<button class="btn" type="button" onclick="generateContractPDF()">📄 GENERATE - WITNESS SPACE FIX</button>
 </div>
 <script>
 const { jsPDF } = window.jspdf;
@@ -95,27 +95,35 @@ function generateContractPDF(){
   doc.setFontSize(8).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",LEFT,y);y+=5;
   doc.setFontSize(7).setFont('helvetica','normal');
   t=`- Provide certified ID copy, proof of address, and 3 proposed company names - Pay R50 on time monthly to stay compliant & keep business listing active - Use Twinz App for all business invoicing to become bankable for loans`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+8;
-  doc.setFontSize(9).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=7;
+  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+7;
+
+  // 6. SIGNATURES - WITNESS ON NEW SPACE LINE - NO CLASH
+  doc.setFontSize(9).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=6;
   doc.setFontSize(7).setFont('helvetica','normal');
   const dateVal=document.getElementById('signDate').value;
-  doc.text(`For TWINZ CORPORATE SERVICES (Thabo & Thabang): Name: ${document.getElementById('twinzRep').value} | Date: ${dateVal}`,LEFT,y);
-  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${dateVal}`,LEFT+108,y);y+=8;
+
+  // Line 1: Twinz Rep
+  doc.text(`For TWINZ CORPORATE SERVICES (Thabo & Thabang): Name: ${document.getElementById('twinzRep').value} | Date: ${dateVal}`,LEFT,y);y+=4.5;
+  // Line 2: Witness on its own line - SPACE LINE FIX
+  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${dateVal}`,LEFT,y);y+=7;
+
   const sig1=document.getElementById('sigTwinz').toDataURL('image/png');
   if(sig1.length>3000)doc.addImage(sig1,'PNG',LEFT,y,32,9);
   const sigW=document.getElementById('sigWitness').toDataURL('image/png');
-  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+108,y,32,9);
-  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+108,y,LEFT+168,y);y+=4;
-  doc.text("Twinz Signature (Thabo & Thabang)",LEFT,y);doc.text("Witness Signature",LEFT+108,y);y+=14;
-  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${dateVal}`,LEFT,y);y+=8;
+  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,32,9);
+  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+110,y,LEFT+170,y);y+=4;
+  doc.text("Twinz Signature (Thabo & Thabang)",LEFT,y);doc.text("Witness Signature",LEFT+110,y);y+=10;
+
+  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${dateVal}`,LEFT,y);y+=7;
   const sig2=document.getElementById('sigClient').toDataURL('image/png');
   if(sig2.length>3000)doc.addImage(sig2,'PNG',LEFT,y,32,9);
-  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+108,y,32,9);
-  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+108,y,LEFT+168,y);y+=4;
-  doc.text("Client Signature",LEFT,y);doc.text("Witness Signature",LEFT+108,y);
+  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,32,9);
+  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+110,y,LEFT+170,y);y+=4;
+  doc.text("Client Signature",LEFT,y);doc.text("Witness Signature",LEFT+110,y);
+
   doc.setFillColor(10,25,49);doc.rect(0,283,210,14,'F');
   doc.setTextColor(255,255,255);doc.setFontSize(6);doc.text("Twinz - Building Bankable SMMEs | Bank-Ready Compliance for ALL SA Banks | Protected under CPA Act | Acc: 10 26 459 443 4 | 068 254 7352",LEFT,291);
-  doc.save(`${bn}-SPACE-FIX.pdf`);
+  doc.save(`${bn}-WITNESS-SPACE-FIX.pdf`);
 }
 </script>
 </body>
