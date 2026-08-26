@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TWINZ - 3 SIGS VISIBLE A4 FULL</title>
+<title>TWINZ - 5 & 6 FIXED - THABO & THABANG</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -24,7 +24,7 @@ label{font-weight:600;font-size:13px}
 <div class="container">
 <img src="https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png" class="logo">
 <h1 style="text-align:center;color:#0A1931;font-size:20px">TWINZ CORPORATE SERVICES</h1>
-<p style="text-align:center;color:#636e72;font-size:11px">A4 FULL - 3 Signatures Visible - Thabo & Thabang - SIG 280 / FOOTER 283</p>
+<p style="text-align:center;color:#636e72;font-size:11px">FIXED 5 & 6 OVERLAP - Thabo & Thabang - 3 SIGS VISIBLE</p>
 <div class="grid">
 <div><label>Saved</label><select id="savedClients" onchange="loadClient()"><option value="">-- Select --</option></select></div>
 <div><label>&nbsp;</label><button class="btn btn-blue" type="button" onclick="saveClient()">💾 Save</button></div>
@@ -39,7 +39,7 @@ label{font-weight:600;font-size:13px}
 <div class="sig-box"><label><b>Client Signature</b></label><input id="clientSign" placeholder="Client Full Name"><canvas id="sigClient" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigClient')">Clear</button></div>
 <div class="sig-box"><label><b>Witness Signature</b></label><input id="witnessName" placeholder="Witness Name"><canvas id="sigWitness" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigWitness')">Clear</button></div>
 <div class="grid"><div><label>Date</label><input type="date" id="signDate"></div><div><label>Start Date</label><input type="date" id="startDate"></div></div>
-<button class="btn" type="button" onclick="generateContractPDF()">📄 GENERATE - 3 SIGS MUST SHOW</button>
+<button class="btn" type="button" onclick="generateContractPDF()">📄 GENERATE - 5 & 6 FIXED - 3 SIGS SHOW</button>
 </div>
 <script>
 const { jsPDF } = window.jspdf;
@@ -100,42 +100,41 @@ function generateContractPDF(){
   const r1=doc.splitTextToSize(`- Register company at CIPC within 5 working days after ID & payment received - Setup & training on Twinz Business App - List business on Twinz App for R37 Straightline & Abroad customers - Provide monthly bank-ready report & invoice system for ANY bank - Assist with BEE & Tax Clearance once per year - Support via WhatsApp: 068 254 7352 / 069 894 9596`,WIDTH);
   doc.text(r1,LEFT,y);y+=r1.length*4.8+2.5;
 
-  doc.setFontSize(9.8).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",LEFT,y);y+=5.5;doc.setFontSize(8.8).setFont('helvetica','normal');
+  // FIXED SECTION 5 - ADDED EXTRA SPACE BEFORE AND AFTER
+  doc.setFontSize(9.8).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",LEFT,y);y+=5.5;
+  doc.setFontSize(8.8).setFont('helvetica','normal');
   const c1=doc.splitTextToSize(`- Provide certified ID copy, proof of address, and 3 proposed company names - Pay R50 on time monthly to stay compliant & keep business listing active - Use Twinz App for all business invoicing to become bankable for loans`,WIDTH);
-  doc.text(c1,LEFT,y);y+=c1.length*4.8+4;
+  doc.text(c1,LEFT,y);y+=c1.length*4.8+8; // <-- FIXED: +8 extra gap instead of 4
 
-  if(y < 195) y = 195;
-  if(y > 200) y = 200;
+  // FIXED SECTION 6 - FORCE NEW LINE WITH GAP - NO OVERLAP
+  if(y < 182) y = 182; // pull up but not too high
+  if(y > 190) y = 190; // keep signatures visible
 
-  doc.setFontSize(10.5).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=6;
+  doc.setFontSize(10.5).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=7; // +7 gap
 
   doc.setFontSize(8.8).setFont('helvetica','normal');
-  doc.text(`For TWINZ CORPORATE SERVICES (Thabo & Thabang): Name: ${document.getElementById('twinzRep').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);y+=4.5;
+  doc.text(`For TWINZ (Thabo & Thabang): ${document.getElementById('twinzRep').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);y+=5;
   const sig1=document.getElementById('sigTwinz').toDataURL('image/png');
-  if(sig1.length>5000)doc.addImage(sig1,'PNG',LEFT,y,45,11);
-  doc.line(LEFT,y+12,LEFT+58,y+12);
-  doc.text("Twinz Signature (Thabo & Thabang)",LEFT,y+15);
-  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${document.getElementById('signDate').value}`,LEFT+95,y+2);
-  const sigW1=document.getElementById('sigWitness').toDataURL('image/png');
-  if(sigW1.length>5000)doc.addImage(sigW1,'PNG',LEFT+95,y,45,11);
-  doc.line(LEFT+95,y+12,LEFT+153,y+12);
-  doc.text("Witness Signature",LEFT+95,y+15);
-  y+=22;
+  if(sig1.length>5000)doc.addImage(sig1,'PNG',LEFT,y,42,10);
+  doc.line(LEFT,y+11,LEFT+58,y+11);
+  doc.text("Twinz Rep Signature (Thabo & Thabang)",LEFT,y+14);
+  y+=20;
 
-  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);
-  y+=4.5;
+  doc.text(`For BUSINESS (Client): ${document.getElementById('clientSign').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);
+  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${document.getElementById('signDate').value}`,LEFT+98,y);y+=6;
+  const sigY = y;
   const sig2=document.getElementById('sigClient').toDataURL('image/png');
-  if(sig2.length>5000)doc.addImage(sig2,'PNG',LEFT,y,45,11);
+  if(sig2.length>5000)doc.addImage(sig2,'PNG',LEFT,sigY,42,10);
   const sig3=document.getElementById('sigWitness').toDataURL('image/png');
-  if(sig3.length>5000)doc.addImage(sig3,'PNG',LEFT+95,y,45,11);
-  doc.line(LEFT,y+12,LEFT+58,y+12);
-  doc.line(LEFT+95,y+12,LEFT+153,y+12);
-  doc.text("Client Signature",LEFT,y+15);
-  doc.text("Witness Signature",LEFT+95,y+15);
+  if(sig3.length>5000)doc.addImage(sig3,'PNG',LEFT+98,sigY,42,10);
+  doc.line(LEFT,sigY+11,LEFT+58,sigY+11);
+  doc.line(LEFT+98,sigY+11,LEFT+153,sigY+11);
+  doc.text("Client Signature",LEFT,sigY+14);
+  doc.text("Witness Signature",LEFT+98,sigY+14);
 
   doc.setFillColor(10,25,49);doc.rect(0,283,210,14,'F');
   doc.setTextColor(255,255,255);doc.setFontSize(7);doc.text("Twinz - Building Bankable SMMEs | Bank-Ready Compliance for ALL SA Banks | Protected under CPA Act | Acc: 10 26 459 443 4 | 068 254 7352",LEFT,291);
-  doc.save(`${bn}-Twinz-3SIGS-A4FULL.pdf`);
+  doc.save(`${bn}-Twinz-FIXED-5-6-THABO-THABANG.pdf`);
 }
 </script>
 </body>
