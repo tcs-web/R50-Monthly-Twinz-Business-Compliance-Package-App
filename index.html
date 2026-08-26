@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TWINZ - WITNESS SPACE LINE FIX</title>
+<title>TWINZ - UPGRADE & CANCELLATION - 12 MONTH</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -15,7 +15,7 @@ label{font-weight:600;font-size:13px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .btn{background:#0A1931;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;width:100%;margin-top:6px;cursor:pointer}
 .btn-gray{background:#636e72;padding:8px;margin-top:4px}
-.btn-blue{background:#0984e3}
+.btn-green{background:#00b894}
 .signature-pad{border:2px dashed #0A1931;border-radius:8px;width:100%;height:110px;touch-action:none;background:#fff}
 .sig-box{margin:8px 0;padding:8px;border:1px solid #ddd;border-radius:10px;background:#fafafa}
 </style>
@@ -23,107 +23,82 @@ label{font-weight:600;font-size:13px}
 <body>
 <div class="container">
 <img src="https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png" class="logo">
-<h1 style="text-align:center;color:#0A1931;font-size:20px;margin:5px 0">TWINZ CORPORATE SERVICES</h1>
-<p style="text-align:center;color:#0A1931;font-weight:700;font-size:11px;margin:0 0 8px 0">WITNESS SPACE FIX - Thabo & Thabang</p>
-<div class="grid"><div><label>Saved</label><select id="savedClients" onchange="loadClient()"><option value="">-- Select --</option></select></div><div><label>&nbsp;</label><button class="btn btn-blue" type="button" onclick="saveClient()">💾 Save</button></div></div>
-<div class="grid"><div><label>Business Name *</label><input id="bizName" value="Twinz Corporate Services Pty Ltd"></div><div><label>Owner Name</label><input id="ownerName" value="Thabo & Thabang Nkuna"></div></div>
-<div class="grid"><div><label>ID Number</label><input id="idNumber" value="9603185760088"></div><div><label>Business Type</label><input id="bizType" value="Multiple Businesses"></div></div>
-<label>Business Address</label><input id="bizAddress" value="Burgersfort Praktiseer Ext 02 Stand no 3211">
-<label>Home Address</label><input id="homeAddress" value="Burgersfort Praktiseer Ext 02 Stand no 3211">
-<label>Email</label><input id="clientEmail" value="twinz.cooperate.services@gmail.com">
-<div class="grid"><div><label>Phone</label><input id="bizPhone" value="0682547352"></div><div><label>WhatsApp</label><input id="bizWA" value="0682547352"></div></div>
-<div class="sig-box"><label><b>Twinz Rep (Thabo & Thabang)</b></label><input id="twinzRep" value="Thabo Nkuna"><canvas id="sigTwinz" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigTwinz')">Clear</button></div>
-<div class="sig-box"><label><b>Client Signature</b></label><input id="clientSign" value="Thatang Nkuna"><canvas id="sigClient" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigClient')">Clear</button></div>
-<div class="sig-box"><label><b>Witness Signature</b></label><input id="witnessName" value="Thapelo Nkuna"><canvas id="sigWitness" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigWitness')">Clear</button></div>
-<div class="grid"><div><label>Date</label><input type="date" id="signDate"></div><div><label>Start Date</label><input type="date" id="startDate"></div></div>
-<button class="btn" type="button" onclick="generateContractPDF()">📄 GENERATE - WITNESS SPACE FIX</button>
+<h1 style="text-align:center;color:#0A1931;font-size:18px;margin:5px 0">TWINZ - UPGRADE TO 12-MONTH PACKAGE</h1>
+<p style="text-align:center;color:#00b894;font-weight:700;font-size:11px;margin:0 0 8px 0">CANCEL OLD MONTH-TO-MONTH + UPGRADE TO COMPLIANCE</p>
+<div class="grid"><div><label>Business Name *</label><input id="bizName" value="MT Male Projects"></div><div><label>Old Contract Date *</label><input type="date" id="oldDate" value="2026-08-05"></div></div>
+<div class="grid"><div><label>Owner Name</label><input id="ownerName"></div><div><label>ID Number</label><input id="idNumber"></div></div>
+<label>Reason for Upgrade</label><input id="reason" value="Client has no CIPC yet - Upgrade to FREE CIPC Sponsorship (Save R1500)">
+<div class="grid"><div><label>New Start Date</label><input type="date" id="startDate"></div><div><label>Upgrade Date</label><input type="date" id="signDate"></div></div>
+<div class="sig-box"><label><b>Twinz Rep (Thabo & Thabang)</b></label><input id="twinzRep" value="Thabo & Thabang Nkuna"><canvas id="sigTwinz" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigTwinz')">Clear</button></div>
+<div class="sig-box"><label><b>Client - I Agree to Upgrade & Cancel Old</b></label><input id="clientSign" placeholder="Client Full Name"><canvas id="sigClient" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigClient')">Clear</button></div>
+<div class="sig-box"><label><b>Witness</b></label><input id="witnessName" placeholder="Witness Name"><canvas id="sigWitness" class="signature-pad"></canvas><button class="btn btn-gray" type="button" onclick="clearSig('sigWitness')">Clear</button></div>
+<button class="btn btn-green" type="button" onclick="generateUpgradePDF()">📄 GENERATE UPGRADE & CANCELLATION AGREEMENT</button>
 </div>
 <script>
 const { jsPDF } = window.jspdf;
 const LOGO_URL='https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png';let logoBase64=null;
 function loadLogo(){return new Promise(r=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>{const c=document.createElement('canvas');c.width=i.width;c.height=i.height;c.getContext('2d').drawImage(i,0,0);logoBase64=c.toDataURL('image/png');r();};i.onerror=()=>r();i.src=LOGO_URL;})}
-window.addEventListener('load',async()=>{await loadLogo();document.getElementById('signDate').value=new Date().toISOString().split('T')[0];document.getElementById('startDate').value=new Date().toISOString().split('T')[0];initSigPad('sigTwinz');initSigPad('sigClient');initSigPad('sigWitness');loadClientList();});
-const getClients=()=>JSON.parse(localStorage.getItem('twinzClients')||'[]');
-function saveClient(){const bn=document.getElementById('bizName').value.trim();if(!bn)return alert("Business Name required");const client=Object.fromEntries(['bizName','ownerName','idNumber','bizType','bizAddress','homeAddress','clientEmail','bizPhone','bizWA','startDate','signDate','witnessName','twinzRep','clientSign'].map(id=>[id,document.getElementById(id)?.value||'']));const clients=getClients().filter(c=>c.bizName!==bn);clients.push(client);localStorage.setItem('twinzClients',JSON.stringify(clients));loadClientList();alert(`Saved ${bn}`);}
-function loadClientList(){const s=document.getElementById('savedClients');if(!s)return;s.innerHTML='<option value="">-- Select --</option>'+getClients().map(c=>`<option value="${c.bizName}">${c.bizName}</option>`).join('');}
-function loadClient(){const name=document.getElementById('savedClients').value;if(!name)return;const c=getClients().find(x=>x.bizName===name);if(c){Object.keys(c).forEach(k=>{if(document.getElementById(k))document.getElementById(k).value=c[k];});}}
+window.addEventListener('load',async()=>{await loadLogo();document.getElementById('signDate').value=new Date().toISOString().split('T')[0];document.getElementById('startDate').value=new Date().toISOString().split('T')[0];initSigPad('sigTwinz');initSigPad('sigClient');initSigPad('sigWitness');});
 function initSigPad(id){const canvas=document.getElementById(id);const ctx=canvas.getContext('2d');const resize=()=>{const r=window.devicePixelRatio||1;const w=canvas.offsetWidth;const h=canvas.offsetHeight;canvas.width=w*r;canvas.height=h*r;ctx.setTransform(1,0,0,1,0,0);ctx.scale(r,r);ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.lineCap='round';};resize();let d=false;const pos=e=>{const rect=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:t.clientX-rect.left,y:t.clientY-rect.top}};canvas.addEventListener('mousedown',e=>{d=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});canvas.addEventListener('touchstart',e=>{e.preventDefault();d=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});canvas.addEventListener('mousemove',e=>{if(!d)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();});canvas.addEventListener('touchmove',e=>{if(!d)return;e.preventDefault();const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});['mouseup','mouseleave','touchend'].forEach(ev=>canvas.addEventListener(ev,()=>{d=false;}));}
 function clearSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,9999,9999);}
-function generateContractPDF(){
-  const bn=document.getElementById('bizName').value.trim()||'Business';
+function generateUpgradePDF(){
+  const bn=document.getElementById('bizName').value||'Business';
   const doc=new jsPDF({format:'a4',unit:'mm'});
   const LEFT=10; const WIDTH=190;
   let y=8;
-  if(logoBase64)doc.addImage(logoBase64,'PNG',LEFT,y,9,9);
-  doc.setFont('helvetica','bold');doc.setFontSize(9.5);doc.text("TWINZ BUSINESS COMPLIANCE PACKAGE - 12-MONTH AGREEMENT",LEFT+12,y+3);
-  doc.setFontSize(7.5);doc.text("12-MONTH SERVICE AGREEMENT - NEW BUSINESS",LEFT+12,y+7);y+=12;
+  if(logoBase64)doc.addImage(logoBase64,'PNG',LEFT,y,10,10);
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text("CONTRACT UPGRADE & CANCELLATION AGREEMENT",LEFT+14,y+4);
+  doc.setFontSize(8);doc.text("UPGRADE FROM MONTH-TO-MONTH TO 12-MONTH COMPLIANCE PACKAGE",LEFT+14,y+8);y+=14;
   doc.setFontSize(5.2).setFont('helvetica','normal');
-  doc.text("TWINZ CORPORATE SERVICES PTY LTD - Reg: 2024/444303/07 | twinz.cooperate.services@gmail.com | 068 254 7352 / 069 894 9596 | Bank: Std Bank 10 26 459 443 4 - Branch: 006145",LEFT,y);y+=3;
-  doc.line(LEFT,y,LEFT+WIDTH,y);y+=10;
-  doc.setFontSize(8).setFont('helvetica','bold').text("CLIENT BUSINESS DETAILS:",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  doc.text(`Business Name: ${document.getElementById('bizName').value} | Owner Name: ${document.getElementById('ownerName').value} | ID: ${document.getElementById('idNumber').value}`,LEFT,y);y+=4.2;
-  doc.text(`Email: ${document.getElementById('bizAddress').value} | Phone: ${document.getElementById('bizPhone').value} | WA: ${document.getElementById('bizWA').value} | Type: ${document.getElementById('bizType').value}`,LEFT,y);y+=4.2;
-  doc.text(`Business Address: ${document.getElementById('clientEmail').value}`,LEFT,y);y+=4.2;
-  doc.text(`Home Address: ${document.getElementById('homeAddress').value}`,LEFT,y);y+=7;
-  doc.setFontSize(8).setFont('helvetica','bold').text("1. FULL COMPLIANCE SERVICE (R50/month x 12 Months)",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  let t=`A) CIPC COMPANY REGISTRATION: Twinz sponsors & registers your company. Includes CIPC Fee R175 (R50 Name + R125 Reg) + Professional Service Fee R1 325 for MOI, filing, follow-up. Market Value R1,500 - SPONSORED FREE for 12-month members.`;
-  let lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+1.5;
-  t=`B) SARS SERVICES: SARS-compliant invoicing, income tracking, annual SARS Return reminder & assistance (filing fee separate R250).`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+1.5;
-  t=`C) BEE CERTIFICATE: 1x FREE BEE Affidavit / Certificate per year (EME under R10m) Value R300.`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+1.5;
-  t=`D) TAX CLEARANCE: Assistance to apply & renew Tax Clearance via SARS eFiling`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+1.5;
-  t=`E) TWINZ BUSINESS APP: Online bookings, Customer database, Digital Invoices, WhatsApp notifications, Business listing for R37 Straightline & Abroad customers, Monthly Bank-Ready CSV Report.`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+1.5;
-  t=`F) BUSINESS ACCOUNT SUPPORT: Full support to open ANY major business bank account (Standard Bank, FNB, Capitec, Nedbank, ABSA) - bank-ready compliance file + referral letter.`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+3;
-  doc.setFontSize(8).setFont('helvetica','bold').text("2. MONTHLY FEE",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  t=`Subscription: R50.00 per month for 12 months = Total R600.00 per year. CIPC Sponsored FREE. Payment: EFT to Standard Bank - Acc Name: Twinz Corporate Services Pty Ltd - Acc No: 10 26 459 443 4 - Branch: 006145 - Ref: ${bn} - Due: 1st every month. First: ${document.getElementById('startDate').value}`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+3.5;
-  doc.setFontSize(8).setFont('helvetica','bold').text("3. AGREEMENT TERM - 12 MONTHS MINIMUM",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  t=`Starts on ${document.getElementById('startDate').value} for MINIMUM 12 MONTHS. Early cancellation fee: R1,500.00 (repayment of CIPC sponsorship + service) if cancelled before 12 months. After 12 months, month-to-month. Cancel with 30 days notice via WhatsApp to 068 254 7352.`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+3.5;
-  doc.setFontSize(8).setFont('helvetica','bold').text("4. TWINZ RESPONSIBILITIES",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  t=`- Register company at CIPC within 5 working days after ID & payment received - Setup & training on Twinz Business App - List business on Twinz App - Provide monthly bank-ready report & invoice system for ANY bank - Assist with BEE & Tax Clearance once per year - Support via WhatsApp: 068 254 7352 / 069 894 9596`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+3.5;
-  doc.setFontSize(8).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",LEFT,y);y+=5;
-  doc.setFontSize(7).setFont('helvetica','normal');
-  t=`- Provide certified ID copy, proof of address, and 3 proposed company names - Pay R50 on time monthly to stay compliant & keep business listing active - Use Twinz App for all business invoicing to become bankable for loans`;
-  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*3.8+7;
+  doc.text("TWINZ CORPORATE SERVICES PTY LTD - Reg: 2024/444303/07 | 068 254 7352 / 069 894 9596 | Thabo & Thabang",LEFT,y);y+=3;doc.line(LEFT,y,LEFT+WIDTH,y);y+=10;
 
-  // 6. SIGNATURES - WITNESS ON NEW SPACE LINE - NO CLASH
-  doc.setFontSize(9).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=6;
-  doc.setFontSize(7).setFont('helvetica','normal');
+  doc.setFontSize(9).setFont('helvetica','bold').text("CLIENT DETAILS:",LEFT,y);y+=6;
+  doc.setFontSize(8).setFont('helvetica','normal');
+  doc.text(`Business Name: ${document.getElementById('bizName').value} | Owner: ${document.getElementById('ownerName').value} | ID: ${document.getElementById('idNumber').value}`,LEFT,y);y+=5;
+  doc.text(`Old Contract Date: ${document.getElementById('oldDate').value} | New 12-Month Start: ${document.getElementById('startDate').value} | Upgrade Date: ${document.getElementById('signDate').value}`,LEFT,y);y+=8;
+
+  doc.setFontSize(9).setFont('helvetica','bold').text("1. CANCELLATION OF OLD CONTRACT",LEFT,y);y+=6;
+  doc.setFontSize(8).setFont('helvetica','normal');
+  let t=`Both parties agree to CANCEL the previous Monthly Service Agreement dated ${document.getElementById('oldDate').value} by mutual agreement. Reason: ${document.getElementById('reason').value}. No penalty, no further obligations under old contract. Old contract marked UPGRADED.`;
+  let lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*4+6;
+
+  doc.setFontSize(9).setFont('helvetica','bold').text("2. UPGRADE TO NEW 12-MONTH COMPLIANCE PACKAGE",LEFT,y);y+=6;
+  doc.setFontSize(8).setFont('helvetica','normal');
+  t=`Client upgrades to TWINZ BUSINESS COMPLIANCE PACKAGE - 12-MONTH AGREEMENT (R50/month x 12 = R600/year). Benefits: CIPC Registration SPONSORED FREE (Save R1,500), SARS Services, BEE Certificate FREE, Tax Clearance Assistance, Twinz Business App, Business Bank Account Support for ALL banks.`;
+  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*4+6;
+
+  doc.setFontSize(9).setFont('helvetica','bold').text("3. LEGAL REPLACEMENT CLAUSE",LEFT,y);y+=6;
+  doc.setFontSize(8).setFont('helvetica','bold');
+  t=`THIS AGREEMENT REPLACES AND SUPERSEDES the previous Monthly Service Agreement dated ${document.getElementById('oldDate').value}. Upon signing this upgrade agreement, the old contract is automatically cancelled and has no further effect. This new 12-month agreement is the only valid contract between the parties.`;
+  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*4+8;
+
+  doc.setFontSize(9).setFont('helvetica','bold').text("4. CLIENT CONFIRMATION",LEFT,y);y+=6;
+  doc.setFontSize(8).setFont('helvetica','normal');
+  t=`I, the undersigned client, confirm that: (a) I have not yet received CIPC registration service under old contract, (b) I understand I am upgrading to 12-month minimum term, (c) Early cancellation fee R1,500 applies if I cancel before 12 months, (d) I agree old contract is cancelled by mutual agreement.`;
+  lines=doc.splitTextToSize(t,WIDTH);doc.text(lines,LEFT,y);y+=lines.length*4+12;
+
+  doc.setFontSize(10).setFont('helvetica','bold').text("5. SIGNATURES - UPGRADE AGREEMENT",LEFT,y);y+=8;
+  doc.setFontSize(8).setFont('helvetica','normal');
   const dateVal=document.getElementById('signDate').value;
-
-  // Line 1: Twinz Rep
-  doc.text(`For TWINZ CORPORATE SERVICES (Thabo & Thabang): Name: ${document.getElementById('twinzRep').value} | Date: ${dateVal}`,LEFT,y);y+=4.5;
-  // Line 2: Witness on its own line - SPACE LINE FIX
-  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${dateVal}`,LEFT,y);y+=7;
-
+  doc.text(`For TWINZ (Thabo & Thabang): Name: ${document.getElementById('twinzRep').value} | Date: ${dateVal}`,LEFT,y);y+=5;
+  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${dateVal}`,LEFT,y);y+=8;
   const sig1=document.getElementById('sigTwinz').toDataURL('image/png');
-  if(sig1.length>3000)doc.addImage(sig1,'PNG',LEFT,y,32,9);
+  if(sig1.length>3000)doc.addImage(sig1,'PNG',LEFT,y,35,10);
   const sigW=document.getElementById('sigWitness').toDataURL('image/png');
-  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,32,9);
-  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+110,y,LEFT+170,y);y+=4;
-  doc.text("Twinz Signature (Thabo & Thabang)",LEFT,y);doc.text("Witness Signature",LEFT+110,y);y+=10;
+  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,35,10);
+  y+=12;doc.line(LEFT,y,LEFT+65,y);doc.line(LEFT+110,y,LEFT+175,y);y+=5;
+  doc.text("Twinz Signature (Thabo & Thabang)",LEFT,y);doc.text("Witness Signature",LEFT+110,y);y+=14;
 
-  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${dateVal}`,LEFT,y);y+=7;
+  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${dateVal} | Agree to Cancel Old & Upgrade`,LEFT,y);y+=8;
   const sig2=document.getElementById('sigClient').toDataURL('image/png');
-  if(sig2.length>3000)doc.addImage(sig2,'PNG',LEFT,y,32,9);
-  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,32,9);
-  y+=11;doc.line(LEFT,y,LEFT+60,y);doc.line(LEFT+110,y,LEFT+170,y);y+=4;
-  doc.text("Client Signature",LEFT,y);doc.text("Witness Signature",LEFT+110,y);
+  if(sig2.length>3000)doc.addImage(sig2,'PNG',LEFT,y,35,10);
+  if(sigW.length>3000)doc.addImage(sigW,'PNG',LEFT+110,y,35,10);
+  y+=12;doc.line(LEFT,y,LEFT+65,y);doc.line(LEFT+110,y,LEFT+175,y);y+=5;
+  doc.text("Client Signature - Upgrade Approved",LEFT,y);doc.text("Witness Signature",LEFT+110,y);
 
-  doc.setFillColor(10,25,49);doc.rect(0,283,210,14,'F');
-  doc.setTextColor(255,255,255);doc.setFontSize(6);doc.text("Twinz - Building Bankable SMMEs | Bank-Ready Compliance for ALL SA Banks | Protected under CPA Act | Acc: 10 26 459 443 4 | 068 254 7352",LEFT,291);
-  doc.save(`${bn}-WITNESS-SPACE-FIX.pdf`);
+  doc.setFillColor(0,184,148);doc.rect(0,283,210,14,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');doc.text("UPGRADE APPROVED - Old Contract Cancelled - New 12-Month Compliance Package Active - CIPC FREE Sponsorship Included | 068 254 7352 | Thabo & Thabang",LEFT,291);
+  doc.save(`${bn}-UPGRADE-CANCELLATION-12MONTH.pdf`);
 }
 </script>
 </body>
