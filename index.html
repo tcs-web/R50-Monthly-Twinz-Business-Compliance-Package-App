@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TWINZ - FULL A4 FILL</title>
+<title>TWINZ - FULL A4 NO CUT</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  body{font-family:'Poppins',sans-serif;background:#f5f5f5;margin:0;padding:15px}
+body{font-family:'Poppins',sans-serif;background:#f5f5f5;margin:0;padding:15px}
 .container{max-width:850px;margin:0 auto;background:#fff;padding:20px;border-radius:12px}
 .logo{display:block;width:90px;margin:0 auto;border-radius:12px}
-  input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:8px}
-  label{font-weight:600;font-size:13px}
+input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:8px}
+label{font-weight:600;font-size:13px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn{background:#0A1931;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:700;width:100%;margin-top:10px;cursor:pointer}
 .btn-gray{background:#636e72}
@@ -22,7 +22,7 @@
 <body>
 <div class="container">
 <img src="https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png" class="logo">
-<h2 style="text-align:center;color:#0A1931">TWINZ CONTRACT - FULL A4</h2>
+<h2 style="text-align:center;color:#0A1931">TWINZ CONTRACT GENERATOR</h2>
 <div class="grid"><div><label>Business Name *</label><input id="bizName"></div><div><label>Owner Name</label><input id="ownerName"></div></div>
 <div class="grid"><div><label>ID Number</label><input id="idNumber"></div><div><label>Business Type</label><input id="bizType"></div></div>
 <label>Business Address</label><input id="bizAddress">
@@ -33,41 +33,42 @@
 <div class="sig-box"><label>Client</label><input id="clientSign"><canvas id="sigClient" class="signature-pad"></canvas><button class="btn btn-gray" onclick="clearSig('sigClient')">Clear</button></div>
 <div class="sig-box"><label>Witness</label><input id="witnessName"><canvas id="sigWitness" class="signature-pad"></canvas><button class="btn btn-gray" onclick="clearSig('sigWitness')">Clear</button></div>
 <div class="grid"><div><label>Date</label><input type="date" id="signDate"></div><div><label>Start Date</label><input type="date" id="startDate"></div></div>
-<div class="grid"><div><label>Month</label><select id="invMonth"></select></div><div><label>Year</label><input type="number" id="invYear" value="2026"></div></div>
-<button class="btn" onclick="generateContractPDF()">📄 Generate FULL A4 Contract</button>
+<button class="btn" onclick="generateContractPDF()">📄 Generate FULL A4 (No White Space)</button>
 </div>
 <script>
 const { jsPDF } = window.jspdf;
-const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const LOGO_URL='https://i.ibb.co/W42TbJMT/IMG-20260605-WA0002.png';let logoBase64=null;
 function loadLogo(){return new Promise(r=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>{const c=document.createElement('canvas');c.width=i.width;c.height=i.height;c.getContext('2d').drawImage(i,0,0);logoBase64=c.toDataURL('image/png');r();};i.onerror=()=>r();i.src=LOGO_URL;})}
-window.addEventListener('load',async()=>{await loadLogo();months.forEach((m,i)=>{document.getElementById('invMonth').innerHTML+=`<option value="${i}">${m}</option>`});document.getElementById('invMonth').value=new Date().getMonth();document.getElementById('signDate').value=new Date().toISOString().split('T')[0];document.getElementById('startDate').value=new Date().toISOString().split('T')[0];initSigPad('sigTwinz');initSigPad('sigClient');initSigPad('sigWitness');});
+window.addEventListener('load',async()=>{await loadLogo();document.getElementById('signDate').value=new Date().toISOString().split('T')[0];document.getElementById('startDate').value=new Date().toISOString().split('T')[0];initSigPad('sigTwinz');initSigPad('sigClient');initSigPad('sigWitness');});
 function initSigPad(id){const c=document.getElementById(id);const ctx=c.getContext('2d');const resize=()=>{const r=window.devicePixelRatio||1;const w=c.offsetWidth;const h=c.offsetHeight;c.width=w*r;c.height=h*r;ctx.setTransform(1,0,0,1,0,0);ctx.scale(r,r);ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.lineCap='round';};resize();let d=false;const pos=e=>{const rect=c.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:t.clientX-rect.left,y:t.clientY-rect.top}};c.addEventListener('mousedown',e=>{d=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});c.addEventListener('touchstart',e=>{e.preventDefault();d=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});c.addEventListener('mousemove',e=>{if(!d)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();});c.addEventListener('touchmove',e=>{if(!d)return;e.preventDefault();const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});['mouseup','mouseleave','touchend'].forEach(ev=>c.addEventListener(ev,()=>{d=false;}));}
 function clearSig(id){const c=document.getElementById(id);c.getContext('2d').clearRect(0,0,9999,9999);}
+
 function generateContractPDF(){
   const bn=document.getElementById('bizName').value.trim()||'Business';
   const doc=new jsPDF({format:'a4',unit:'mm'});
-  let y=8;
-  if(logoBase64)doc.addImage(logoBase64,'PNG',8,y,12,12);
-  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.text("TWINZ BUSINESS COMPLIANCE PACKAGE - 12-MONTH AGREEMENT",24,y+4);
-  doc.setFontSize(9);doc.text("12-MONTH SERVICE AGREEMENT - NEW BUSINESS",24,y+9);y+=15;
-  // NO CUTTING - use 190 width max
-  doc.setFontSize(6.5).setFont('helvetica','normal');
-  doc.text("TWINZ CORPORATE SERVICES PTY LTD - Reg: 2024/444303/07 | twinz.cooperate.services@gmail.com | 068 254 7352 / 069 894 9596",8,y);
-  y+=3;doc.text("Bank: Standard Bank | Acc: 10 26 459 443 4 | Branch: 006145 - Acc Name: Twinz Corporate Services Pty Ltd",8,y);y+=2;doc.line(8,y,202,y);y+=4;
+  const LEFT=10; const WIDTH=190; // SAFE - NO CUTTING
+  let y=10;
+  if(logoBase64)doc.addImage(logoBase64,'PNG',LEFT,y,14,14);
+  doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text("TWINZ BUSINESS COMPLIANCE PACKAGE - 12-MONTH AGREEMENT",LEFT+18,y+5);
+  doc.setFontSize(9.5);doc.text("12-MONTH SERVICE AGREEMENT - NEW BUSINESS",LEFT+18,y+10);y+=18;
 
-  doc.setFontSize(9).setFont('helvetica','bold').text("CLIENT BUSINESS DETAILS:",8,y);y+=5;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`Business Name: ${document.getElementById('bizName').value} | Owner Name: ${document.getElementById('ownerName').value}`,8,y);y+=5;
-  doc.text(`Owner Name: ${document.getElementById('ownerName').value} | ID No: ${document.getElementById('idNumber').value} | Phone: ${document.getElementById('bizPhone').value} | WA: ${document.getElementById('bizWA').value}`,8,y);y+=5;
-  doc.text(`Email: ${document.getElementById('clientEmail').value} | Type: ${document.getElementById('bizType').value}`,8,y);y+=5;
-  doc.text(`Business Address: ${document.getElementById('bizAddress').value}`,8,y);y+=5;
-  doc.text(`Home Address: ${document.getElementById('homeAddress').value}`,8,y);y+=7;
+  doc.setFontSize(7).setFont('helvetica','normal');
+  const topLine = doc.splitTextToSize("TWINZ CORPORATE SERVICES PTY LTD - Reg: 2024/444303/07 | twinz.cooperate.services@gmail.com | 068 254 7352 / 069 894 9596 | Bank: Std Bank 10 26 459 443 4 Br: 006145", WIDTH);
+  doc.text(topLine,LEFT,y);y+=topLine.length*3+1;doc.line(LEFT,y,LEFT+WIDTH,y);y+=5;
 
-  // SECTION 1 - FULL A4 FILL
-  doc.setFontSize(9).setFont('helvetica','bold').text("1. FULL COMPLIANCE SERVICE (R50/month x 12 Months)",8,y);y+=6;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  const s1 = [
+  doc.setFontSize(9.5).setFont('helvetica','bold').text("CLIENT BUSINESS DETAILS:",LEFT,y);y+=5;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  doc.text(`Business Name: ${document.getElementById('bizName').value} | Owner Name: ${document.getElementById('ownerName').value} | ID: ${document.getElementById('idNumber').value}`,LEFT,y);y+=5;
+  const emailLine = doc.splitTextToSize(`Email: ${document.getElementById('clientEmail').value} | Phone: ${document.getElementById('bizPhone').value} | WA: ${document.getElementById('bizWA').value} | Type: ${document.getElementById('bizType').value}`, WIDTH);
+  doc.text(emailLine,LEFT,y);y+=emailLine.length*4.5+1;
+  const addr1 = doc.splitTextToSize(`Business Address: ${document.getElementById('bizAddress').value}`, WIDTH);
+  doc.text(addr1,LEFT,y);y+=addr1.length*4.5+1;
+  const addr2 = doc.splitTextToSize(`Home Address: ${document.getElementById('homeAddress').value}`, WIDTH);
+  doc.text(addr2,LEFT,y);y+=addr2.length*4.5+3;
+
+  doc.setFontSize(10).setFont('helvetica','bold').text("1. FULL COMPLIANCE SERVICE (R50/month x 12 Months)",LEFT,y);y+=6;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  const services=[
     `A) CIPC COMPANY REGISTRATION: Twinz sponsors & registers your company. Includes CIPC Fee R175 (R50 Name + R125 Reg) + Professional Service Fee R1,325 for MOI, filing, follow-up. Market Value R1,500 - SPONSORED FREE for 12-month members.`,
     `B) SARS SERVICES: SARS-compliant invoicing, income tracking, annual SARS Return reminder & assistance (filing fee separate R250).`,
     `C) BEE CERTIFICATE: 1x FREE BEE Affidavit / Certificate per year (EME under R10m) Value R300.`,
@@ -75,48 +76,52 @@ function generateContractPDF(){
     `E) TWINZ BUSINESS APP: Online bookings, Customer database, Digital Invoices, WhatsApp notifications, Business listing for R37 Straightline & Abroad customers, Monthly Bank-Ready CSV Report.`,
     `F) BUSINESS ACCOUNT SUPPORT: Full support to open ANY major business bank account (Standard Bank, FNB, Capitec, Nedbank, ABSA) + bank-ready compliance file + referral letter.`
   ];
-  s1.forEach(t=>{ const lines=doc.splitTextToSize(t, 188); doc.text(lines,8,y); y+=lines.length*4.5+1; });
+  services.forEach(t=>{ const lines=doc.splitTextToSize(t, WIDTH); doc.text(lines,LEFT,y); y+=lines.length*4.8+2; });
   y+=2;
 
-  doc.setFontSize(9).setFont('helvetica','bold').text("2. MONTHLY FEE",8,y);y+=5;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`Subscription: R50.00 per month for 12 months = Total R600.00 per year. CIPC Sponsored FREE for 12-month members.`,8,y);y+=5;
-  doc.text(`Payment: EFT to Standard Bank - Acc Name: Twinz Corporate Services Pty Ltd - Acc No: 10 26 459 443 4 - Branch: 006145`,8,y);y+=5;
-  doc.text(`Reference: ${bn} | Due: 1st of every month | First payment due on ${document.getElementById('startDate').value}`,8,y);y+=7;
+  doc.setFontSize(10).setFont('helvetica','bold').text("2. MONTHLY FEE",LEFT,y);y+=6;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  doc.text(`Subscription: R50.00 per month for 12 months = Total R600.00 per year. CIPC Sponsored FREE.`,LEFT,y);y+=5;
+  const payLine = doc.splitTextToSize(`Payment: EFT to Standard Bank - Acc Name: Twinz Corporate Services Pty Ltd - Acc No: 10 26 459 443 4 - Branch: 006145 - Reference: ${bn} - Due: 1st every month. First: ${document.getElementById('startDate').value}`, WIDTH);
+  doc.text(payLine,LEFT,y);y+=payLine.length*4.8+4;
 
-  doc.setFontSize(9).setFont('helvetica','bold').text("3. AGREEMENT TERM - 12 MONTHS MINIMUM",8,y);y+=5;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`Starts on ${document.getElementById('startDate').value} for MINIMUM 12 MONTHS. Early cancellation fee: R1,500.00 (repayment of CIPC sponsorship + service) if cancelled before 12 months.`,8,y);y+=5;
-  doc.text(`After 12 months, month-to-month. Cancel with 30 days notice via WhatsApp to 068 254 7352.`,8,y);y+=7;
+  doc.setFontSize(10).setFont('helvetica','bold').text("3. AGREEMENT TERM - 12 MONTHS MINIMUM",LEFT,y);y+=6;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  const termLine = doc.splitTextToSize(`Starts on ${document.getElementById('startDate').value} for MINIMUM 12 MONTHS. Early cancellation fee: R1,500.00 (repayment of CIPC sponsorship + service) if cancelled before 12 months. After 12 months, month-to-month. Cancel with 30 days notice via WhatsApp to 068 254 7352.`, WIDTH);
+  doc.text(termLine,LEFT,y);y+=termLine.length*4.8+4;
 
-  doc.setFontSize(9).setFont('helvetica','bold').text("4. TWINZ RESPONSIBILITIES",8,y);y+=5;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`- Register company at CIPC within 5 working days after ID & payment received`,8,y);y+=5;
-  doc.text(`- Setup & training on Twinz Business App - List business on Twinz App for R37 Straightline & Abroad customers`,8,y);y+=5;
-  doc.text(`- Provide monthly bank-ready report & invoice system for ANY bank - Assist with BEE & Tax Clearance once per year - Support via WhatsApp: 068 254 7352 / 069 894 9596`,8,y);y+=7;
+  doc.setFontSize(10).setFont('helvetica','bold').text("4. TWINZ RESPONSIBILITIES",LEFT,y);y+=6;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  const resp1 = doc.splitTextToSize(`- Register company at CIPC within 5 working days after ID & payment received - Setup & training on Twinz Business App - List business on Twinz App for R37 Straightline & Abroad customers - Provide monthly bank-ready report & invoice system for ANY bank`, WIDTH);
+  doc.text(resp1,LEFT,y);y+=resp1.length*4.8+2;
+  const resp2 = doc.splitTextToSize(`- Assist with BEE & Tax Clearance application once per year - Support via WhatsApp: 068 254 7352 / 069 894 9596`, WIDTH);
+  doc.text(resp2,LEFT,y);y+=resp2.length*4.8+4;
 
-  doc.setFontSize(9).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",8,y);y+=5;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`- Provide certified ID copy, proof of address, and 3 proposed company names`,8,y);y+=5;
-  doc.text(`- Pay R50 on time monthly to stay compliant & keep business listing active - Use Twinz App for all business invoicing to become bankable for loans`,8,y);y+=9;
+  doc.setFontSize(10).setFont('helvetica','bold').text("5. CLIENT RESPONSIBILITIES",LEFT,y);y+=6;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  const clientResp = doc.splitTextToSize(`- Provide certified ID copy, proof of address, and 3 proposed company names - Pay R50 on time monthly to stay compliant & keep business listing active - Use Twinz App for all business invoicing to become bankable for loans`, WIDTH);
+  doc.text(clientResp,LEFT,y);y+=clientResp.length*4.8+6;
 
-  // SIGNATURES - PUSHED DOWN TO FILL PAGE
-  doc.setFontSize(10).setFont('helvetica','bold').text("6. SIGNATURES",8,y);y+=7;
-  doc.setFontSize(8.5).setFont('helvetica','normal');
-  doc.text(`For TWINZ CORPORATE SERVICES: Name: ${document.getElementById('twinzRep').value} | Date: ${document.getElementById('signDate').value}`,8,y);y+=4;
-  const sig1=document.getElementById('sigTwinz').toDataURL('image/png');if(sig1.length>5000)doc.addImage(sig1,'PNG',8,y,45,14);
-  doc.line(8,y+15,70,y+15);doc.text("Twinz Signature",8,y+18);y+=23;
+  // AUTO FILL WHITE SPACE - push signatures to middle-bottom
+  if(y < 165) y = 165; // force to fill white space
 
-  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${document.getElementById('signDate').value}`,8,y);
-  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${document.getElementById('signDate').value}`,110,y);y+=4;
-  const sig2=document.getElementById('sigClient').toDataURL('image/png');if(sig2.length>5000)doc.addImage(sig2,'PNG',8,y,45,14);
-  const sig3=document.getElementById('sigWitness').toDataURL('image/png');if(sig3.length>5000)doc.addImage(sig3,'PNG',110,y,45,14);
-  doc.line(8,y+15,70,y+15);doc.line(110,y+15,172,y+15);
-  doc.text("Client Signature",8,y+18);doc.text("Witness Signature",110,y+18);
+  doc.setFontSize(11).setFont('helvetica','bold').text("6. SIGNATURES",LEFT,y);y+=8;
+  doc.setFontSize(9).setFont('helvetica','normal');
+  doc.text(`For TWINZ CORPORATE SERVICES: Name: ${document.getElementById('twinzRep').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);y+=5;
+  const sig1=document.getElementById('sigTwinz').toDataURL('image/png');if(sig1.length>5000)doc.addImage(sig1,'PNG',LEFT,y,50,18);
+  doc.setLineWidth(0.4);doc.line(LEFT,y+19,LEFT+60,y+19);doc.text("Twinz Signature",LEFT,y+23);y+=30;
 
+  doc.text(`For BUSINESS (Client): Name: ${document.getElementById('clientSign').value} | Date: ${document.getElementById('signDate').value}`,LEFT,y);
+  doc.text(`Witness: ${document.getElementById('witnessName').value} | Date: ${document.getElementById('signDate').value}`,LEFT+100,y);y+=5;
+  const sig2=document.getElementById('sigClient').toDataURL('image/png');if(sig2.length>5000)doc.addImage(sig2,'PNG',LEFT,y,50,18);
+  const sig3=document.getElementById('sigWitness').toDataURL('image/png');if(sig3.length>5000)doc.addImage(sig3,'PNG',LEFT+100,y,50,18);
+  doc.line(LEFT,y+19,LEFT+60,y+19);doc.line(LEFT+100,y+19,LEFT+160,y+19);
+  doc.text("Client Signature",LEFT,y+23);doc.text("Witness Signature",LEFT+100,y+23);
+
+  // FOOTER - ALWAYS AT BOTTOM
   doc.setFillColor(10,25,49);doc.rect(0,287,210,10,'F');
-  doc.setTextColor(255,255,255);doc.setFontSize(7);doc.text("Twinz - Building Bankable SMMEs | Bank-Ready Compliance for ALL major SA Banks | Protected under CPA Act | Acc: 10 26 459 443 4",10,293);
-  doc.save(`${bn}-Twinz-1PAGE-FULL-A4.pdf`);
+  doc.setTextColor(255,255,255);doc.setFontSize(7);doc.text("Twinz - Building Bankable SMMEs | Bank-Ready Compliance for ALL major SA Banks | Protected under CPA Act | Acc: 10 26 459 443 4 | 068 254 7352",LEFT,293);
+  doc.save(`${bn}-Twinz-FULL-A4.pdf`);
 }
 </script>
 </body>
